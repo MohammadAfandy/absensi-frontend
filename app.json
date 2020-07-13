@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -23,6 +21,10 @@
       "favicon": "./assets/favicon.png"
     },
     "description": "",
-    "githubUrl": "https://github.com/MohammadAfandy/absensi-frontend"
+    "githubUrl": "https://github.com/MohammadAfandy/absensi-frontend",
+    "android": {
+      "package": "com.mohammadafandy.absensi",
+      "versionCode": 1
+    }
   }
 }

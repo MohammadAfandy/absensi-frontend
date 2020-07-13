@@ -10,6 +10,7 @@ import { Camera } from "expo-camera";
 import { MaterialIcons } from "@expo/vector-icons";
 import moment from "moment";
 import { globalStyles } from "../styles/global";
+import api from "../services/api";
 
 export default function QrCode({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -35,22 +36,18 @@ export default function QrCode({ navigation }) {
     let alertMessage = "";
     let isError = false;
     try {
-      let response = await fetch(data);
-      let json = await response.json();
-      if (response.ok) {
-        alertMessage = `Berhasil Absen ${
-          json.data.type == "in" ? "Masuk" : "Keluar"
-        }\n${json.data.email}\n${
-          json.data.type == "in"
-            ? moment(json.data.in).format("MMMM Do YYYY, h:mm:ss a")
-            : moment(json.data.out).format("MMMM Do YYYY, h:mm:ss a")
-        }`;
-      } else {
-        throw new Error(json.error || "Gagal");
-      }
+      let response = await api().get(data);
+      let json = await response.data.data;
+      alertMessage = `Berhasil Absen ${
+        json.type == "in" ? "Masuk" : "Keluar"
+      }\n${json.email}\n${
+        json.type == "in"
+          ? moment(json.in).format("MMMM Do YYYY, h:mm:ss a")
+          : moment(json.out).format("MMMM Do YYYY, h:mm:ss a")
+      }`;
     } catch (error) {
       isError = true;
-      alertMessage = error.toString() || "Gagal";
+      alertMessage = error.response.data.error || "Gagal";
     } finally {
       Alert.alert("Absensi", alertMessage, [
         {
